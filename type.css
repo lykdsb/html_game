@@ -1,0 +1,91 @@
+@font-face {
+    font-family: 'MyNewFont';
+
+    src: url('font/Sacramento-Regular.ttf');
+}
+span{
+
+    position:absolute;
+    background-color: black;
+    transform:translate(-50%,-50%);
+    pointer-events: none;
+    border-radius: 50%;
+    animation: animate 1s linear infinite;
+}
+body
+{
+    background: linear-gradient(90deg,#0162c8,#55e7fc);
+}
+
+@keyframes animate {
+    0%
+    {
+        width:0px;
+        height: 0px;
+        opacity: 0.5;
+    }
+    100%
+    {
+        width:500px;
+        height: 500px;
+        opacity: 0;
+    }
+
+}
+
+
+#ball
+{
+    position: absolute;
+    top: 0px;
+    left: 10%;
+    width: 80px;
+    height: 80px;
+    border: 1px solid dimgray;
+    border-radius: 50%;
+    background: linear-gradient(140deg,#E5FFB4,#99E2FA);
+}
+#ball_shadow
+{
+    position: absolute;
+    top: 680px;
+    left: 16%;
+    width: 80px;
+    height: 10px;
+    border: 1px solid dimgray;
+    border-radius: 50%;
+    background-color: rgba(0,0,0,0.2);
+}
+
+
+#welcome
+{
+    font-family: MyNewFont;
+    font-size: 100px;
+    text-align: center;
+}
+
+#writer
+{
+    font-family: MyNewFont;
+    font-size: 30px;
+    text-align: right;
+
+}
+
+#play_button
+{
+  position: absolute;
+  width: 300px;
+  height:100px;
+  top:50%;
+  left:42%;
+  font-family: MyNewFont;
+  font-size: 50px;
+  box-shadow: 10px 10px 10px rgba(0,0,0,0.2);
+  -webkit-border-radius: 40px;
+  outline:none;
+  text-align: center;
+  overflow: hidden;
+  background-image: linear-gradient(to top, #fff1eb 0%, #ace0f9 100%);
+}
