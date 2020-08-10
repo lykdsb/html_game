@@ -73,6 +73,14 @@ body
 
 }
 
+#score_board
+{
+    font-family: MyNewFont;
+    font-size: 80px;
+    text-align: center;
+}
+
+
 #play_button
 {
   position: absolute;
