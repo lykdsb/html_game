@@ -11,12 +11,68 @@ let acc=0.3;
 let v=0;
 let height=0;
 let score=0;
+let max_height=920;
+let platformCount=5;
+let position=0;
+let p1=new Platform();
+let canvas = document.getElementById('canvas'),
+ctx = canvas.getContext('2d');
+function drawRoundedRect(ctx, x, y, width, height, r, fill, stroke) {
+    ctx.save(); ctx.beginPath(); // draw top and top right corner
+    ctx.moveTo(x + r, y);
+    ctx.arcTo(x + width, y, x + width, y + r, r); // draw right side and bottom right corner
+    ctx.arcTo(x + width, y + height, x + width - r, y + height, r); // draw bottom and bottom left corner
+    ctx.arcTo(x, y + height, x, y + height - r, r); // draw left and top left corner
+    ctx.arcTo(x, y, x + r, y, r);
+    if (fill) { ctx.fill(); }
+    if (stroke) { ctx.stroke(); }
+    ctx.restore();
+}
+//画布是300*150等比例变化
+function Platform() {
+    this.width = 50;
+    this.height = 5;
+
+    this.x = Math.random()*250;
+    this.y = 145;
+
+    this.flag=1;
+    position += (max_height / platformCount);
+    //Function to draw it
+    this.draw = function () {
+        try {
+            let grd=ctx.createLinearGradient(this.x,this.y,this.width,this.height);
+            grd.addColorStop(0,"#fff1eb");
+            grd.addColorStop(1,"#ace0f9");
+            ctx.fillStyle=grd;
+            ctx.fillRect(this.x,this.y,this.width,this.height);
+        } catch (e) {
+        }
+    };
+    this.update=function()
+    {
+        ctx.clearRect(this.x,this.y,this.width,this.height);
+        if(this.flag==1)
+        {
+            this.x++;
+            if(this.x>=250)this.flag=-1;
+        }
+        else
+        {
+            this.x--;
+            if(this.x<=0)this.flag=1;
+        }
+
+
+    }
+
+}
 let Ball=function()
 {
 this.y=920;
 this.x=900;
 this.v=0;
-this.acc=0.3;
+this.acc=0.6;
 this.flag=0;
 this.is_jumping=false;
 }
@@ -89,6 +145,8 @@ function init()
 
 }
 function update() {
+    p1.update();
+    p1.draw();
     document.onkeydown = function (e) {
         let key = e.keyCode;
         if(cur_ball.flag==0)
@@ -114,7 +172,7 @@ function update() {
     {
         cur_ball.flag=0;
     }
-    cur_ball.x+=cur_ball.flag*6;
+    cur_ball.x+=cur_ball.flag*15;
     ball.style.left=cur_ball.x+'px';
     if(cur_ball.is_jumping==true)
     {

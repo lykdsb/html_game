@@ -4,7 +4,6 @@
     src: url('font/Sacramento-Regular.ttf');
 }
 span{
-
     position:absolute;
     background-color: black;
     transform:translate(-50%,-50%);
@@ -12,6 +11,12 @@ span{
     border-radius: 50%;
     animation: animate 1s linear infinite;
 }
+canvas
+{
+    height:980px;
+    width:1900px;
+}
+
 body
 {
     background: linear-gradient(90deg,#0162c8,#55e7fc);
@@ -57,16 +62,22 @@ body
     background-color: rgba(0,0,0,0.2);
 }
 
-
 #welcome
 {
+    position: absolute;
+    left: 35%;
+    top:0%;
     font-family: MyNewFont;
     font-size: 100px;
     text-align: center;
+
 }
 
 #writer
 {
+    position: absolute;
+    left:800px;
+    top:20%;
     font-family: MyNewFont;
     font-size: 30px;
     text-align: right;
@@ -75,11 +86,13 @@ body
 
 #score_board
 {
+    position: absolute;
+    left:32%;
+    top:0%;
     font-family: MyNewFont;
     font-size: 80px;
     text-align: center;
 }
-
 
 #play_button
 {
