@@ -14,7 +14,7 @@ let score=0;
 let max_height=920;
 let platformCount=5;
 let position=0;
-let p1=new Platform();
+let platforms=new Array();
 let canvas = document.getElementById('canvas'),
 ctx = canvas.getContext('2d');
 function drawRoundedRect(ctx, x, y, width, height, r, fill, stroke) {
@@ -30,11 +30,11 @@ function drawRoundedRect(ctx, x, y, width, height, r, fill, stroke) {
 }
 //画布是300*150等比例变化
 function Platform() {
-    this.width = 50;
-    this.height = 5;
+    this.width = 30;
+    this.height = 2;
 
     this.x = Math.random()*250;
-    this.y = 145;
+    this.y = position/980*150;
 
     this.flag=1;
     position += (max_height / platformCount);
@@ -52,18 +52,6 @@ function Platform() {
     this.update=function()
     {
         ctx.clearRect(this.x,this.y,this.width,this.height);
-        if(this.flag==1)
-        {
-            this.x++;
-            if(this.x>=250)this.flag=-1;
-        }
-        else
-        {
-            this.x--;
-            if(this.x<=0)this.flag=1;
-        }
-
-
     }
 
 }
@@ -75,6 +63,7 @@ this.v=0;
 this.acc=0.6;
 this.flag=0;
 this.is_jumping=false;
+this.updated=false;
 }
 let cur_ball=new Ball();
 
@@ -141,12 +130,15 @@ function init()
     let text=document.createTextNode("Score: 0");
     score_board.appendChild(text);
     document.body.appendChild(score_board);
+    for(let i=0;i<platformCount;i++)
+        platforms.push(new Platform());
     menuLoop();
 
 }
 function update() {
-    p1.update();
-    p1.draw();
+
+    for(let i=0;i<platformCount;i++)
+        platforms[i].draw();
     document.onkeydown = function (e) {
         let key = e.keyCode;
         if(cur_ball.flag==0)
@@ -162,7 +154,9 @@ function update() {
         {
             if(key==38)
             {
+                cur_ball.acc=0.6;
                 cur_ball.v=-20;
+                cur_ball.updated=false;
                 cur_ball.is_jumping=true;
             }
         }
@@ -173,6 +167,8 @@ function update() {
         cur_ball.flag=0;
     }
     cur_ball.x+=cur_ball.flag*15;
+    if(cur_ball.x>1900)cur_ball.x=0;
+    else if(cur_ball.x<0)cur_ball.x=1900;
     ball.style.left=cur_ball.x+'px';
     if(cur_ball.is_jumping==true)
     {
@@ -184,11 +180,34 @@ function update() {
             cur_ball.y=920;
             cur_ball.is_jumping=false;
             cur_ball.v=0;
+            cur_ball.updated=true;
             ball.style.top=cur_ball.y+'px';
         }
       score=Math.floor(Math.max(score,920-cur_ball.y)) ;
       document.getElementById("score_board").innerText="Score: "+score;
     }
+    for(let i=0;i<platformCount;i++)
+        if(cur_ball.v>=0&&cur_ball.y>=platforms[i].y*980/150-80&&cur_ball.y<=(platforms[i].y+platforms[i].height)*980/150-40)
+        {
+            if(cur_ball.x>=platforms[i].x*1900/300-40&&cur_ball.x<=(platforms[i].x+platforms[i].width)*1900/300)
+            {cur_ball.is_jumping=false;cur_ball.v=0;
+           //cur_ball.y-=max_height / platformCount;
+                if(cur_ball.updated==false){
+                    for(let j=0;j<platformCount;j++)
+                    {
+                        platforms[j].y+=10;
+                    }
+                    cur_ball.y+=10*980/150;
+                    ball.style.top=cur_ball.y+"px";
+                    ctx.clearRect(0,0,300,150);
+                    cur_ball.updated=true;
+                }
+
+            }
+            else
+            cur_ball.is_jumping=true;
+        }
+
 
 
 }
