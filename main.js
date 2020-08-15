@@ -16,7 +16,7 @@ window.onload=function (){
     let score=0;
     let max_height=920;
     let platformCount=5;
-    let position=900;
+    let position=716;
     let platforms=new Array();
     let game_over=false;
     let canvas = document.getElementById('canvas'),
@@ -54,7 +54,9 @@ window.onload=function (){
     function Platform() {
         this.width = 30;
         this.height = 3;
-
+        this.move=false;
+        if(Math.random()<=0.2)this.move=true;
+        this.direction=1;
         this.x = Math.random()*250;
         this.y = position/980*150;
 
@@ -73,7 +75,7 @@ window.onload=function (){
         };
         this.update=function()
         {
-            ctx.clearRect(this.x,this.y,this.width,this.height);
+            ctx.clearRect(this.x-1,this.y+1,this.width,this.height);
         }
 
     }
@@ -207,6 +209,24 @@ window.onload=function (){
             }
 
         }
+        for(let i=0;i<platforms.length;i++)
+        {
+            if(platforms[i].move==true)
+            {
+                platforms[i].update();
+                platforms[i].x+=platforms[i].direction*5/1900*300;
+                if(platforms[i].x>270)platforms[i].direction=-1;
+                else if(platforms[i].x<0)platforms[i].direction=1;
+                ctx.clearRect(0,0,300,150);
+                for(let j=0;j<platforms.length;j++)
+                {
+                    platforms[j].draw();
+                }
+
+            }
+
+        }
+
         for(let i=0;i<platforms.length;i++)
             if(cur_ball.v>=0&&cur_ball.y>=platforms[i].y*980/150-80&&cur_ball.y<=(platforms[i].y+platforms[i].height)*980/150-40)
             {
